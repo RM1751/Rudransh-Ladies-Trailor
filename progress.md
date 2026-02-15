@@ -116,7 +116,7 @@
 ## Notes
 
 - WhatsApp Number: +918840586403
-- WhatsApp Link: https://api.whatsapp.com/message/5ENPHPUVUVYOF1?autoload=1&app_absent=0
+- WhatsApp Link: https://wa.me/918840586403 (Updated to universal format)
 - All data currently stored in browser localStorage
 - Images are stored as data URLs in localStorage (for demo)
 - For production, backend server needed for permanent storage

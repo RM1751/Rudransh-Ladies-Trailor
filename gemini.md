@@ -8,7 +8,7 @@
 
 **Business Name:** Rudransh Trailoring at doorStep  
 **WhatsApp Number:** +918840586403  
-**WhatsApp Link:** https://api.whatsapp.com/message/5ENPHPUVUVYOF1?autoload=1&app_absent=0  
+**WhatsApp Link:** https://wa.me/918840586403 (Universal format for mobile & desktop)  
 **Project Type:** Responsive Website with Booking Form + WhatsApp Integration  
 **Tech Stack:** HTML, CSS, JavaScript (Frontend), Python (Backend for form processing)
 

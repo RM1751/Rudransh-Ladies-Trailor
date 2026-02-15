@@ -22,9 +22,9 @@
 ## WhatsApp Integration Research
 
 **Method:** Direct WhatsApp Chat Link
-- URL Format: `https://api.whatsapp.com/message/5ENPHPUVUVYOF1?autoload=1&app_absent=0`
+- URL Format: `https://wa.me/918840586403` (Universal format - works on mobile & desktop)
 - No API key required
-- Opens WhatsApp web/app with pre-filled message
+- Opens WhatsApp web/app
 - Customer clicks to send
 
 **Implementation:**
