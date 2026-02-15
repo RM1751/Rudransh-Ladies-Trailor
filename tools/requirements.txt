@@ -1,0 +1,21 @@
+# Rudransh Tailoring - Python Dependencies
+# Install with: pip install -r requirements.txt
+
+# Web Framework
+flask>=2.3.0
+werkzeug>=2.3.0
+
+# CORS support
+flask-cors>=4.0.0
+
+# Environment variables
+python-dotenv>=1.0.0
+
+# Optional: For production server
+# gunicorn>=21.0.0
+
+# Optional: For image processing
+# Pillow>=10.0.0
+
+# Optional: For database (if needed in future)
+# flask-sqlalchemy>=3.0.0
