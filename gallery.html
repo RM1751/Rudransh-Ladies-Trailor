@@ -85,23 +85,30 @@
         </div>
     </div>
 
-            <!-- Real Images Gallery - ADD YOUR IMAGES TO images/ FOLDER -->
-            <h3 style="color: #8B0000; margin: 30px 0 20px; text-align: center;">🖼️ Our Work</h3>
+            <!-- Admin Uploaded Images Gallery -->
+            <h3 style="color: #8B0000; margin: 30px 0 20px; text-align: center;">
+                <span style="font-size: 1.5rem;">&#128444;</span> Our Work
+            </h3>
             
-            <!-- Instructions for adding images -->
-            <div id="noImagesMsg" style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; border-radius: 8px; margin-bottom: 30px; text-align: center;">
-                <p style="color: #856404; margin-bottom: 10px;">
-                    <strong>📸 Add Your Work Photos Here!</strong>
-                </p>
-                <p style="color: #856404; font-size: 0.95rem;">
-                    1. Add images to the <code>images/</code> folder<br>
-                    2. Update the image paths below<br>
-                    3. Push to GitHub and redeploy<br>
-                    <a href="images/README.txt" style="color: #8B0000; text-decoration: underline;">Read instructions →</a>
+            <!-- Admin Gallery Grid -->
+            <div class="gallery-grid" id="adminGallery">
+                <p style="color: #666; text-align: center; grid-column: 1/-1; padding: 40px;">
+                    Loading gallery images... If no images appear, please upload from Admin Panel.
                 </p>
             </div>
 
-            <div class="gallery-grid" id="realImagesGallery">
+            <!-- Instructions for adding images (shown only when no images) -->
+            <div id="noImagesMsg" style="display: none; background: #fff3cd; border: 1px solid #ffeaa7; padding: 20px; border-radius: 8px; margin: 30px 0; text-align: center;">
+                <p style="color: #856404; margin-bottom: 10px;">
+                    <strong>&#128247; Add Your Work Photos Here!</strong>
+                </p>
+                <p style="color: #856404; font-size: 0.95rem;">
+                    1. Go to <a href="admin.html" style="color: #8B0000; text-decoration: underline;">Admin Panel</a><br>
+                    2. Login and upload images with categories<br>
+                    3. Images will appear here automatically<br>
+                    <a href="images/README.txt" style="color: #8B0000; text-decoration: underline;">Read instructions →</a>
+                </p>
+            </div>
                 <!-- 
                 ADD YOUR REAL IMAGES HERE!
                 Copy this block for each image and update the src:
@@ -175,9 +182,6 @@
                         <p style="color: var(--primary); font-size: 0.85rem; margin-top: 8px;">👆 Click to view & order</p>
                     </div>
                 </div>
-                -->
-            </div>
-
             <!-- Sample Gallery Grid (Default Placeholders) -->
             <h3 style="color: #666; margin: 40px 0 20px; text-align: center; font-size: 1.1rem;">✨ Sample Designs</h3>
             <div class="gallery-grid" id="sampleGallery">
@@ -247,6 +251,11 @@
                 </div>
             </div>
 
+            <!-- Hidden Admin Quick Link (only visible when logged in) -->
+            <div id="adminQuickLink" style="display: none; margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 8px; text-align: center;">
+                <p style="margin-bottom: 15px; color: #666;">Welcome, Admin!</p>
+                <a href="admin.html" class="btn btn-primary">Go to Admin Panel</a>
+            </div>
 
         </div>
     </section>
@@ -297,6 +306,7 @@
     </div>
 
     <script src="js/main.js"></script>
+    <script src="js/admin-check.js"></script>
     <script>
         // Store all images for modal access
         let allImages = [];
@@ -446,9 +456,18 @@
             loadAdminImages(filter);
         }
 
+        // Show admin quick link if logged in
+        function showAdminQuickLink() {
+            const quickLink = document.getElementById('adminQuickLink');
+            if (quickLink && sessionStorage.getItem('adminLoggedIn') === 'true') {
+                quickLink.style.display = 'block';
+            }
+        }
+
         // Load admin images on page load
         document.addEventListener('DOMContentLoaded', function() {
             loadAdminImages();
+            showAdminQuickLink();
         });
     </script>
 </body>
