@@ -243,6 +243,25 @@
         .category-select {
             margin-top: 20px;
         }
+        
+        /* Upload mode toggle buttons */
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        /* Cloudinary section styling */
+        #cloudUploadSection {
+            border: 2px solid #3448c5;
+        }
+        
+        #cloudUploadSection h3 {
+            color: #3448c5;
+        }
         .preview-area {
             margin-top: 20px;
             display: none;
@@ -338,9 +357,22 @@
         <div class="container">
             <div id="successMessage" class="success-msg"></div>
 
-            <!-- Upload Section -->
-            <div class="admin-section">
-                <h3>📤 Upload New Image</h3>
+            <!-- Upload Mode Toggle -->
+            <div style="margin-bottom: 20px; text-align: center;">
+                <button class="btn btn-secondary" id="localModeBtn" onclick="setUploadMode('local')" style="margin-right: 10px;">
+                    💾 Browser Storage
+                </button>
+                <button class="btn" id="cloudModeBtn" onclick="setUploadMode('cloud')" style="background: #3448c5; color: white;">
+                    ☁️ Cloudinary (Recommended)
+                </button>
+            </div>
+
+            <!-- Local Storage Upload Section -->
+            <div id="localUploadSection" class="admin-section" style="display: none;">
+                <h3>📤 Upload to Browser Storage</h3>
+                <p style="color: #856404; background: #fff3cd; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                    ⚠️ Images stored in browser only. Other visitors won't see these.
+                </p>
                 <div class="upload-area" id="uploadArea">
                     <input type="file" id="imageInput" accept="image/*">
                     <span style="font-size: 3rem;">📷</span>
@@ -374,8 +406,53 @@
                 </div>
 
                 <button class="btn btn-primary" id="uploadBtn" style="margin-top: 20px; width: 100%;" disabled>
-                    Upload Image
+                    Upload to Browser
                 </button>
+            </div>
+
+            <!-- Cloudinary Upload Section -->
+            <div id="cloudUploadSection" class="admin-section">
+                <h3>☁️ Upload to Cloudinary (Permanent)</h3>
+                <p style="color: #155724; background: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 15px;">
+                    ✅ Images stored permanently on Cloud. All visitors can see these!
+                </p>
+                
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; text-align: center;">
+                    <p style="margin-bottom: 15px; color: #666;">
+                        Upload images directly to Cloudinary cloud storage.<br>
+                        Fast, reliable, and visible to everyone!
+                    </p>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label for="cloudCategory">Select Category:</label>
+                        <select id="cloudCategory" style="margin-top: 5px;">
+                            <option value="blouse">Blouse</option>
+                            <option value="kurti">Kurti</option>
+                            <option value="salwar">Salwar Suit</option>
+                            <option value="lehenga">Lehenga</option>
+                            <option value="gown">Gown</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label for="cloudTitle">Image Title:</label>
+                        <input type="text" id="cloudTitle" placeholder="e.g., Princess Cut Blouse" style="margin-top: 5px;">
+                    </div>
+                    
+                    <div style="margin-bottom: 15px;">
+                        <label for="cloudDesc">Description:</label>
+                        <input type="text" id="cloudDesc" placeholder="Brief description" style="margin-top: 5px;">
+                    </div>
+                    
+                    <button onclick="openCloudinaryWidget()" class="btn btn-primary" style="background: #3448c5; width: 100%;">
+                        ☁️ Open Cloudinary Upload
+                    </button>
+                    
+                    <p style="margin-top: 15px; font-size: 0.85rem; color: #999;">
+                        Powered by <a href="https://cloudinary.com" target="_blank" style="color: #3448c5;">Cloudinary</a>
+                    </p>
+                </div>
             </div>
 
             <!-- Manage Images Section -->
@@ -436,13 +513,29 @@
             <!-- Instructions -->
             <div class="admin-section" style="background: #fff8f0;">
                 <h3>ℹ️ Instructions</h3>
+                
+                <h4 style="color: #3448c5; margin-top: 20px;">☁️ Cloudinary Upload (Recommended)</h4>
                 <ul style="line-height: 2; color: #333;">
-                    <li>Upload images in JPG or PNG format only</li>
+                    <li>Images stored permanently in cloud - visible to ALL visitors</li>
+                    <li>Fast global CDN delivery</li>
                     <li>Maximum file size: 5MB per image</li>
+                    <li>Supported formats: JPG, PNG, GIF, WebP</li>
+                    <li><a href="CLOUDINARY_SETUP.md" target="_blank" style="color: #8B0000;">📖 Setup Cloudinary (One-time)</a></li>
+                </ul>
+                
+                <h4 style="color: #666; margin-top: 20px;">💾 Browser Storage Upload</h4>
+                <ul style="line-height: 2; color: #333;">
+                    <li>Images stored only in YOUR browser</li>
+                    <li>Other visitors WON'T see these images</li>
+                    <li>Useful for testing before cloud upload</li>
+                    <li>Images lost if browser cache is cleared</li>
+                </ul>
+                
+                <h4 style="color: #8B0000; margin-top: 20px;">⚡ Quick Tips</h4>
+                <ul style="line-height: 2; color: #333;">
                     <li>Select appropriate category for better organization</li>
                     <li>Add descriptive titles to help customers understand</li>
-                    <li>Images are stored locally in your browser</li>
-                    <li>Deleted images cannot be recovered</li>
+                    <li>Use high-quality images for better showcase</li>
                     <li>Change your password regularly for security</li>
                 </ul>
             </div>
@@ -825,6 +918,118 @@
             div.textContent = text;
             return div.innerHTML;
         }
+
+        // Upload Mode Toggle
+        function setUploadMode(mode) {
+            const localSection = document.getElementById('localUploadSection');
+            const cloudSection = document.getElementById('cloudUploadSection');
+            const localBtn = document.getElementById('localModeBtn');
+            const cloudBtn = document.getElementById('cloudModeBtn');
+            
+            if (mode === 'local') {
+                localSection.style.display = 'block';
+                cloudSection.style.display = 'none';
+                localBtn.style.background = '#8B0000';
+                localBtn.style.color = 'white';
+                cloudBtn.style.background = '#ccc';
+                cloudBtn.style.color = '#333';
+            } else {
+                localSection.style.display = 'none';
+                cloudSection.style.display = 'block';
+                cloudBtn.style.background = '#3448c5';
+                cloudBtn.style.color = 'white';
+                localBtn.style.background = '#ccc';
+                localBtn.style.color = '#333';
+            }
+        }
+
+        // Cloudinary Upload
+        function openCloudinaryWidget() {
+            // Check if Cloudinary is configured
+            if (typeof window.CLOUDINARY_CONFIG === 'undefined' || 
+                window.CLOUDINARY_CONFIG.cloudName === 'YOUR_CLOUD_NAME') {
+                alert('⚠️ Cloudinary not configured!\n\nPlease follow these steps:\n1. Sign up at cloudinary.com\n2. Get your Cloud name from Dashboard\n3. Update js/cloudinary-config.js\n4. Create an upload preset in Cloudinary settings');
+                return;
+            }
+
+            const category = document.getElementById('cloudCategory').value;
+            const title = document.getElementById('cloudTitle').value || 'Untitled';
+            const description = document.getElementById('cloudDesc').value || '';
+
+            cloudinary.openUploadWidget({
+                cloudName: window.CLOUDINARY_CONFIG.cloudName,
+                uploadPreset: window.CLOUDINARY_CONFIG.uploadPreset,
+                folder: window.CLOUDINARY_CONFIG.folder,
+                sources: ['local', 'url', 'camera'],
+                multiple: false,
+                maxFiles: 1,
+                maxFileSize: 5000000, // 5MB
+                resourceType: 'image',
+                showAdvancedOptions: false,
+                cropping: false,
+                showPoweredBy: false,
+                styles: {
+                    palette: {
+                        window: '#FFFFFF',
+                        windowBorder: '#8B0000',
+                        tabIcon: '#8B0000',
+                        menuIcons: '#8B0000',
+                        textDark: '#333333',
+                        textLight: '#FFFFFF',
+                        link: '#8B0000',
+                        action: '#8B0000',
+                        inactiveTabIcon: '#666666',
+                        error: '#F44235',
+                        inProgress: '#8B0000',
+                        complete: '#20B832',
+                        sourceBg: '#E4EBF1'
+                    }
+                }
+            }, (error, result) => {
+                if (error) {
+                    console.error('Upload error:', error);
+                    alert('Upload failed: ' + error.message);
+                    return;
+                }
+                
+                if (result && result.event === 'success') {
+                    // Save to localStorage with Cloudinary URL
+                    const imageData = {
+                        id: Date.now(),
+                        title: title,
+                        description: description,
+                        category: category,
+                        fileName: result.info.original_filename,
+                        dataUrl: result.info.secure_url, // Cloudinary URL
+                        uploadedAt: new Date().toLocaleString(),
+                        isCloudinary: true
+                    };
+
+                    let images = JSON.parse(localStorage.getItem('galleryImages') || '[]');
+                    images.push(imageData);
+                    localStorage.setItem('galleryImages', JSON.stringify(images));
+
+                    showSuccess('✅ Image uploaded to Cloudinary successfully!');
+                    
+                    // Clear form
+                    document.getElementById('cloudTitle').value = '';
+                    document.getElementById('cloudDesc').value = '';
+                    
+                    // Refresh grid
+                    loadImages();
+                }
+            });
+        }
+
+        // Initialize with Cloudinary mode as default
+        document.addEventListener('DOMContentLoaded', function() {
+            setUploadMode('cloud');
+        });
     </script>
+    
+    <!-- Cloudinary Upload Widget -->
+    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
+    <!-- Cloudinary Config -->
+    <script src="js/cloudinary-config.js"></script>
 </body>
 </html>
