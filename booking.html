@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment - Rudrans Ladies Tailoring</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <h1>🧵 Rudrans</h1>
+                <span>Ladies Tailoring at Doorstep</span>
+            </div>
+            <button class="nav-toggle" id="navToggle">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="booking.html" class="active">Book Now</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <div class="container">
+            <h1>Book Appointment</h1>
+            <p>Fill in your details and we'll contact you soon</p>
+        </div>
+    </header>
+
+    <!-- Booking Form Section -->
+    <section class="form-section">
+        <div class="container">
+            <div class="form-container">
+                <form id="bookingForm">
+                    <!-- Customer Details -->
+                    <h3 style="color: #8B0000; margin-bottom: 20px; border-bottom: 2px solid #FFD700; padding-bottom: 10px;">👤 Customer Details</h3>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="customer_name">Full Name <span class="required">*</span></label>
+                            <input type="text" id="customer_name" name="customer_name" required placeholder="Enter your full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone_number">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="phone_number" name="phone_number" required placeholder="10-digit mobile number" maxlength="10">
+                            <p class="form-hint">We'll contact you on this number</p>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="your@email.com (optional)">
+                        </div>
+                        <div class="form-group">
+                            <label for="preferred_date">Preferred Date</label>
+                            <input type="date" id="preferred_date" name="preferred_date">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Complete Address <span class="required">*</span></label>
+                        <textarea id="address" name="address" rows="3" required placeholder="Enter your full address including landmark"></textarea>
+                    </div>
+
+                    <!-- Order Details -->
+                    <h3 style="color: #8B0000; margin: 30px 0 20px; border-bottom: 2px solid #FFD700; padding-bottom: 10px;">👗 Order Details</h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="garment_type">Garment Type <span class="required">*</span></label>
+                            <select id="garment_type" name="garment_type" required>
+                                <option value="">Select garment type</option>
+                                <option value="Blouse">Blouse</option>
+                                <option value="Kurti">Kurti</option>
+                                <option value="Salwar Kameez">Salwar Kameez</option>
+                                <option value="Lehenga">Lehenga</option>
+                                <option value="Gown">Gown / Dress</option>
+                                <option value="Alteration">Alteration</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="style_preference">Style / Design Preference</label>
+                            <input type="text" id="style_preference" name="style_preference" placeholder="e.g., Princess Cut, Anarkali, Simple">
+                        </div>
+                    </div>
+
+                    <script>
+                        // Pre-fill form from URL parameters (when coming from gallery)
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const urlParams = new URLSearchParams(window.location.search);
+                            const category = urlParams.get('category');
+                            const style = urlParams.get('style');
+                            
+                            if (category) {
+                                const garmentSelect = document.getElementById('garment_type');
+                                const categoryMap = {
+                                    'blouse': 'Blouse',
+                                    'kurti': 'Kurti',
+                                    'salwar': 'Salwar Kameez',
+                                    'lehenga': 'Lehenga',
+                                    'gown': 'Gown',
+                                    'other': 'Other'
+                                };
+                                if (categoryMap[category]) {
+                                    garmentSelect.value = categoryMap[category];
+                                }
+                            }
+                            
+                            if (style) {
+                                document.getElementById('style_preference').value = decodeURIComponent(style);
+                            }
+                        });
+                    </script>
+
+                    <!-- Measurements -->
+                    <h3 style="color: #8B0000; margin: 30px 0 20px; border-bottom: 2px solid #FFD700; padding-bottom: 10px;">📏 Measurements</h3>
+
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 0 0 100%;">
+                            <label>Unit:</label>
+                            <div style="display: flex; gap: 20px;">
+                                <label style="display: flex; align-items: center; gap: 5px; font-weight: normal;">
+                                    <input type="radio" name="unit" value="inches" checked> Inches
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 5px; font-weight: normal;">
+                                    <input type="radio" name="unit" value="cm"> Centimeters
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bust">Bust <span class="required">*</span></label>
+                            <input type="number" id="bust" name="bust" step="0.1" required placeholder="e.g., 36">
+                        </div>
+                        <div class="form-group">
+                            <label for="waist">Waist <span class="required">*</span></label>
+                            <input type="number" id="waist" name="waist" step="0.1" required placeholder="e.g., 30">
+                        </div>
+                        <div class="form-group">
+                            <label for="hip">Hip <span class="required">*</span></label>
+                            <input type="number" id="hip" name="hip" step="0.1" required placeholder="e.g., 38">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="shoulder">Shoulder Width <span class="required">*</span></label>
+                            <input type="number" id="shoulder" name="shoulder" step="0.1" required placeholder="e.g., 14">
+                        </div>
+                        <div class="form-group">
+                            <label for="arm_length">Arm Length</label>
+                            <input type="number" id="arm_length" name="arm_length" step="0.1" placeholder="e.g., 22">
+                        </div>
+                        <div class="form-group">
+                            <label for="length">Garment Length <span class="required">*</span></label>
+                            <input type="number" id="length" name="length" step="0.1" required placeholder="e.g., 28">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="sleeve_length">Sleeve Length</label>
+                            <input type="number" id="sleeve_length" name="sleeve_length" step="0.1" placeholder="e.g., 12 (0 for sleeveless)">
+                        </div>
+                        <div class="form-group">
+                            <label for="neck_depth">Neck Depth</label>
+                            <input type="number" id="neck_depth" name="neck_depth" step="0.1" placeholder="e.g., 8">
+                        </div>
+                    </div>
+
+                    <!-- Additional Options -->
+                    <h3 style="color: #8B0000; margin: 30px 0 20px; border-bottom: 2px solid #FFD700; padding-bottom: 10px;">📋 Additional Options</h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="fabric_provided" name="fabric_provided">
+                                <label for="fabric_provided" style="margin-bottom: 0;">I will provide my own fabric</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="pickup_required" name="pickup_required" checked>
+                                <label for="pickup_required" style="margin-bottom: 0;">Need fabric/garment pickup</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <div class="checkbox-group">
+                                <input type="checkbox" id="delivery_required" name="delivery_required" checked>
+                                <label for="delivery_required" style="margin-bottom: 0;">Need home delivery</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="special_instructions">Special Instructions</label>
+                        <textarea id="special_instructions" name="special_instructions" rows="3" placeholder="Any specific requirements, design details, or additional notes..."></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary submit-btn">
+                        📱 Submit via WhatsApp
+                    </button>
+                    <p style="text-align: center; margin-top: 15px; color: #666; font-size: 0.9rem;">
+                        After clicking, you'll be redirected to WhatsApp with your details filled in.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>🧵 Rudrans Ladies Tailoring</h3>
+                    <p>at Doorstep</p>
+                </div>
+                <div class="footer-contact">
+                    <p>📞 +91 88405 86403</p>
+                    <p>📱 WhatsApp Available</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Rudrans Ladies Tailoring. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://api.whatsapp.com/message/5ENPHPUVUVYOF1?autoload=1&app_absent=0" 
+       class="whatsapp-float" 
+       target="_blank" 
+       title="Chat on WhatsApp">
+        <svg viewBox="0 0 32 32" width="32" height="32">
+            <path fill="currentColor" d="M16 2C8.268 2 2 8.268 2 16c0 2.585.686 5.012 1.882 7.118L2 30l6.882-1.882A13.942 13.942 0 0016 30c7.732 0 14-6.268 14-14S23.732 2 16 2zm0 25.2a11.2 11.2 0 01-5.67-1.536l-.408-.244-4.092 1.12 1.092-3.992-.264-.42A11.185 11.185 0 014.8 16 11.22 11.22 0 0116 4.8 11.22 11.22 0 0127.2 16 11.22 11.22 0 0116 27.2zm6.16-8.42c-.34-.17-2.02-1-2.33-1.11-.31-.11-.54-.17-.76.17-.22.34-.86 1.11-1.06 1.34-.2.23-.39.26-.73.09a9.15 9.15 0 01-2.7-1.67 10.1 10.1 0 01-1.87-2.32c-.2-.34 0-.52.15-.69.15-.15.34-.39.51-.58.17-.2.22-.34.34-.56.11-.22.06-.42-.03-.58-.09-.17-.76-1.83-1.04-2.5-.27-.65-.55-.56-.76-.57l-.65-.01c-.22 0-.58.08-.88.42-.31.34-1.17 1.14-1.17 2.78 0 1.64 1.19 3.23 1.36 3.45.17.22 2.34 3.59 5.68 5.03.79.34 1.41.54 1.89.7.79.25 1.51.22 2.08.13.63-.1 2.02-.83 2.31-1.63.28-.8.28-1.49.2-1.63-.09-.15-.32-.23-.66-.39z"/>
+        </svg>
+    </a>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
