@@ -314,10 +314,20 @@
         // Store all images for modal access
         let allImages = [];
 
-        // Load admin uploaded images
-        function loadAdminImages(filter = 'all') {
+        // Load images from gallery-data.json (works on all devices)
+        async function loadAdminImages(filter = 'all') {
             const adminGallery = document.getElementById('adminGallery');
-            allImages = JSON.parse(localStorage.getItem('galleryImages') || '[]');
+            
+            // Try to load from gallery-data.json first
+            try {
+                const response = await fetch('gallery-data.json?v=' + Date.now());
+                const data = await response.json();
+                allImages = data.images || [];
+            } catch (e) {
+                console.log('Could not load gallery-data.json, trying localStorage fallback');
+                // Fallback to localStorage for backward compatibility
+                allImages = JSON.parse(localStorage.getItem('galleryImages') || '[]');
+            }
             
             if (allImages.length === 0) {
                 adminGallery.innerHTML = '<p style="color: #666; text-align: center; grid-column: 1/-1; padding: 40px;">No images uploaded yet. Upload from Admin Panel.</p>';
@@ -336,7 +346,7 @@
             adminGallery.innerHTML = filteredImages.map((img, index) => `
                 <div class="gallery-item" data-category="${img.category}" onclick="openModal(${img.id})">
                     <div class="gallery-image-wrapper" style="aspect-ratio: 1; overflow: hidden; border-radius: 8px 8px 0 0;">
-                        <img src="${img.dataUrl}" alt="${escapeHtml(img.title)}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                        <img src="${img.url || img.dataUrl}" alt="${escapeHtml(img.title)}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'" onerror="this.src='images/placeholder.jpg'">
                     </div>
                     <div class="gallery-info">
                         <h4>${escapeHtml(img.title)}</h4>
@@ -349,10 +359,10 @@
 
         // Open Modal for Admin Images
         function openModal(imageId) {
-            const image = allImages.find(img => img.id === imageId);
+            const image = allImages.find(img => img.id == imageId);
             if (!image) return;
 
-            document.getElementById('modalImg').src = image.dataUrl;
+            document.getElementById('modalImg').src = image.url || image.dataUrl;
             document.getElementById('modalImg').alt = image.title;
             document.getElementById('modalCategory').textContent = image.category;
             document.getElementById('modalTitle').textContent = image.title;
@@ -438,7 +448,7 @@
         }
 
         // Filter function for both galleries
-        function applyFilter(btn, filter) {
+        async function applyFilter(btn, filter) {
             // Update active button
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -456,7 +466,7 @@
             });
             
             // Reload admin gallery with filter
-            loadAdminImages(filter);
+            await loadAdminImages(filter);
         }
 
         // Show admin quick link if logged in
@@ -468,8 +478,8 @@
         }
 
         // Load admin images on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            loadAdminImages();
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadAdminImages();
             showAdminQuickLink();
         });
     </script>

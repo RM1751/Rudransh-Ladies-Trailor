@@ -496,6 +496,16 @@
             <div class="admin-section">
                 <h3>🖼️ Manage Gallery Images</h3>
                 
+                <!-- Export to GitHub Notice -->
+                <div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <p style="color: #155724; margin-bottom: 10px;">
+                        <strong>💡 Important:</strong> Images are stored in your browser. To make them visible on all devices (mobile, other laptops), you need to export and commit to GitHub.
+                    </p>
+                    <button onclick="exportGalleryData()" class="btn btn-primary" style="background: #28a745; width: 100%;">
+                        📤 Export Gallery Data for GitHub
+                    </button>
+                </div>
+                
                 <div style="margin-bottom: 20px;">
                     <label>Filter by Category:</label>
                     <select id="filterCategory" onchange="filterImages()">
@@ -914,6 +924,52 @@
         function filterImages() {
             const filter = document.getElementById('filterCategory').value;
             loadImages(filter);
+        }
+
+        // Export gallery data to JSON file for GitHub
+        function exportGalleryData() {
+            const images = JSON.parse(localStorage.getItem('galleryImages') || '[]');
+            
+            if (images.length === 0) {
+                alert('⚠️ No images to export. Please upload some images first.');
+                return;
+            }
+
+            // Format images for gallery-data.json
+            const galleryData = {
+                images: images.map(img => ({
+                    id: img.id,
+                    title: img.title,
+                    description: img.description || '',
+                    category: img.category,
+                    url: img.dataUrl || img.url,
+                    uploadedAt: img.uploadedAt,
+                    isCloudinary: img.isCloudinary || false
+                })),
+                version: "1.0",
+                lastUpdated: new Date().toISOString()
+            };
+
+            // Create downloadable JSON file
+            const dataStr = JSON.stringify(galleryData, null, 2);
+            const blob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            // Create download link
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'gallery-data.json';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            showSuccess('✅ gallery-data.json downloaded! Please commit this file to GitHub.');
+            
+            // Show instructions
+            setTimeout(() => {
+                alert('📝 Next Steps:\n\n1. Replace the gallery-data.json file in your repository\n2. Commit and push to GitHub\n3. Images will now show on all devices!\n\nNote: You need to export and commit this file every time you add new images.');
+            }, 500);
         }
 
         function deleteImage(id) {

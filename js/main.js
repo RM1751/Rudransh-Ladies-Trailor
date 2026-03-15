@@ -197,18 +197,26 @@ function initSmoothScroll() {
 }
 
 // Hero Image Slider
-function initHeroSlider() {
+async function initHeroSlider() {
     const sliderContainer = document.getElementById('heroSliderContainer');
     const dotsContainer = document.getElementById('heroSliderDots');
     
     if (!sliderContainer) return;
     
-    // Load images from localStorage (same as gallery)
+    // Load images from gallery-data.json (works on all devices)
     let images = [];
     try {
-        images = JSON.parse(localStorage.getItem('galleryImages')) || [];
+        const response = await fetch('gallery-data.json?v=' + Date.now());
+        const data = await response.json();
+        images = data.images || [];
     } catch (e) {
-        images = [];
+        console.log('Could not load gallery-data.json, trying localStorage fallback');
+        // Fallback to localStorage for backward compatibility
+        try {
+            images = JSON.parse(localStorage.getItem('galleryImages')) || [];
+        } catch (e2) {
+            images = [];
+        }
     }
     
     // If no uploaded images, keep the default placeholder
@@ -226,8 +234,8 @@ function initHeroSlider() {
         const slide = document.createElement('div');
         slide.className = 'hero-slide' + (index === 0 ? ' active' : '');
         slide.innerHTML = `
-            <img src="${img.dataUrl || img.url || img.imageUrl}" alt="${img.name || img.title || 'Gallery Image'}" loading="lazy">
-            <div class="slide-caption">${img.name || img.title || 'Beautiful Custom Stitched Outfits'}</div>
+            <img src="${img.url || img.dataUrl || img.imageUrl}" alt="${img.title || img.name || 'Gallery Image'}" loading="lazy" onerror="this.src='images/placeholder.jpg'">
+            <div class="slide-caption">${img.title || img.name || 'Beautiful Custom Stitched Outfits'}</div>
         `;
         sliderContainer.appendChild(slide);
         

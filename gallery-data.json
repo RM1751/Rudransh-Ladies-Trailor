@@ -1,0 +1,15 @@
+{
+  "images": [
+    {
+      "id": 1,
+      "title": "Blouse Thumbnail",
+      "description": "Beautiful blouse design",
+      "category": "blouse",
+      "url": "https://res.cloudinary.com/dbaduzib2/image/upload/v1773573175/Blouse-Thumbnail-Hindi_1_sfgxlk.png",
+      "uploadedAt": "2026-03-15T16:45:00.000Z",
+      "isCloudinary": true
+    }
+  ],
+  "version": "1.0",
+  "lastUpdated": "2026-03-15T16:45:00.000Z"
+}
