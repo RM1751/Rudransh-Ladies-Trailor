@@ -453,6 +453,43 @@
                         Powered by <a href="https://cloudinary.com" target="_blank" style="color: #3448c5;">Cloudinary</a>
                     </p>
                 </div>
+                
+                <!-- Add Existing Cloudinary Image by URL -->
+                <div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-top: 20px; border: 1px dashed #ffc107;">
+                    <h4 style="color: #856404; margin-bottom: 10px;">➕ Add Existing Cloudinary Image</h4>
+                    <p style="font-size: 0.9rem; color: #856404; margin-bottom: 15px;">
+                        Already have an image in Cloudinary? Add it by URL.
+                    </p>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <label for="existingCloudUrl" style="color: #856404;">Cloudinary Image URL:</label>
+                        <input type="url" id="existingCloudUrl" placeholder="https://res.cloudinary.com/dbaduzib2/image/upload/..." style="margin-top: 5px; font-size: 0.9rem;">
+                        <small style="color: #856404; font-size: 0.8rem; display: block; margin-top: 5px;">
+                            Example: https://res.cloudinary.com/dbaduzib2/image/upload/v1773573175/Blouse-Thumbnail-Hindi_1_sfgxlk.png
+                        </small>
+                    </div>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <label for="existingCloudCategory" style="color: #856404;">Category:</label>
+                        <select id="existingCloudCategory" style="margin-top: 5px;">
+                            <option value="blouse">Blouse</option>
+                            <option value="kurti">Kurti</option>
+                            <option value="salwar">Salwar Suit</option>
+                            <option value="lehenga">Lehenga</option>
+                            <option value="gown">Gown</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div style="margin-bottom: 10px;">
+                        <label for="existingCloudTitle" style="color: #856404;">Title:</label>
+                        <input type="text" id="existingCloudTitle" placeholder="e.g., Blouse Design" style="margin-top: 5px;">
+                    </div>
+                    
+                    <button onclick="addExistingCloudinaryImage()" class="btn btn-primary" style="background: #e67e22; width: 100%; margin-top: 10px;">
+                        ➕ Add to Gallery
+                    </button>
+                </div>
             </div>
 
             <!-- Manage Images Section -->
@@ -947,6 +984,7 @@
         function openCloudinaryWidget() {
             // Check if Cloudinary is configured
             if (typeof window.CLOUDINARY_CONFIG === 'undefined' || 
+                !window.CLOUDINARY_CONFIG.cloudName ||
                 window.CLOUDINARY_CONFIG.cloudName === 'YOUR_CLOUD_NAME') {
                 alert('⚠️ Cloudinary not configured!\n\nPlease follow these steps:\n1. Sign up at cloudinary.com\n2. Get your Cloud name from Dashboard\n3. Update js/cloudinary-config.js\n4. Create an upload preset in Cloudinary settings');
                 return;
@@ -1019,6 +1057,56 @@
                     loadImages();
                 }
             });
+        }
+
+        // Add existing Cloudinary image by URL
+        function addExistingCloudinaryImage() {
+            const url = document.getElementById('existingCloudUrl').value.trim();
+            const category = document.getElementById('existingCloudCategory').value;
+            const title = document.getElementById('existingCloudTitle').value.trim() || 'Cloudinary Image';
+            
+            // Validate URL
+            if (!url) {
+                alert('⚠️ Please enter a Cloudinary image URL');
+                return;
+            }
+            
+            // Check if it's a valid Cloudinary URL
+            if (!url.includes('cloudinary.com')) {
+                alert('⚠️ Please enter a valid Cloudinary URL (should contain cloudinary.com)');
+                return;
+            }
+            
+            // Extract filename from URL
+            const urlParts = url.split('/');
+            const fileName = urlParts[urlParts.length - 1] || 'image';
+            
+            // Create image data object
+            const imageData = {
+                id: Date.now(),
+                title: title,
+                description: 'Added from Cloudinary',
+                category: category,
+                fileName: fileName,
+                dataUrl: url,
+                uploadedAt: new Date().toLocaleString(),
+                isCloudinary: true
+            };
+            
+            // Save to localStorage
+            let images = JSON.parse(localStorage.getItem('galleryImages') || '[]');
+            images.push(imageData);
+            localStorage.setItem('galleryImages', JSON.stringify(images));
+            
+            // Show success message
+            showSuccess('✅ Image added to gallery successfully!');
+            
+            // Clear form
+            document.getElementById('existingCloudUrl').value = '';
+            document.getElementById('existingCloudTitle').value = '';
+            
+            // Refresh grid
+            loadImages();
         }
 
         // Initialize with Cloudinary mode as default

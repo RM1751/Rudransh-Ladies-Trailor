@@ -196,11 +196,85 @@ function initSmoothScroll() {
     });
 }
 
+// Hero Image Slider
+function initHeroSlider() {
+    const sliderContainer = document.getElementById('heroSliderContainer');
+    const dotsContainer = document.getElementById('heroSliderDots');
+    
+    if (!sliderContainer) return;
+    
+    // Load images from localStorage (same as gallery)
+    let images = [];
+    try {
+        images = JSON.parse(localStorage.getItem('galleryImages')) || [];
+    } catch (e) {
+        images = [];
+    }
+    
+    // If no uploaded images, keep the default placeholder
+    if (images.length === 0) {
+        if (dotsContainer) dotsContainer.style.display = 'none';
+        return;
+    }
+    
+    // Clear container and build slides
+    sliderContainer.innerHTML = '';
+    if (dotsContainer) dotsContainer.innerHTML = '';
+    
+    images.forEach((img, index) => {
+        // Create slide
+        const slide = document.createElement('div');
+        slide.className = 'hero-slide' + (index === 0 ? ' active' : '');
+        slide.innerHTML = `
+            <img src="${img.dataUrl || img.url || img.imageUrl}" alt="${img.name || img.title || 'Gallery Image'}" loading="lazy">
+            <div class="slide-caption">${img.name || img.title || 'Beautiful Custom Stitched Outfits'}</div>
+        `;
+        sliderContainer.appendChild(slide);
+        
+        // Create dot
+        if (dotsContainer) {
+            const dot = document.createElement('div');
+            dot.className = 'hero-slider-dot' + (index === 0 ? ' active' : '');
+            dot.addEventListener('click', () => goToSlide(index));
+            dotsContainer.appendChild(dot);
+        }
+    });
+    
+    // Auto-slide every 3 seconds
+    let currentSlide = 0;
+    const totalSlides = images.length;
+    
+    function goToSlide(index) {
+        const slides = sliderContainer.querySelectorAll('.hero-slide');
+        const dots = dotsContainer ? dotsContainer.querySelectorAll('.hero-slider-dot') : [];
+        
+        // Remove active class from current
+        slides[currentSlide].classList.remove('active');
+        if (dots[currentSlide]) dots[currentSlide].classList.remove('active');
+        
+        // Update current
+        currentSlide = index;
+        
+        // Add active class to new
+        slides[currentSlide].classList.add('active');
+        if (dots[currentSlide]) dots[currentSlide].classList.add('active');
+    }
+    
+    function nextSlide() {
+        const next = (currentSlide + 1) % totalSlides;
+        goToSlide(next);
+    }
+    
+    // Start auto-slide
+    setInterval(nextSlide, 3000);
+}
+
 // Initialize all functions when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     initBookingForm();
     initGalleryFilter();
     initSmoothScroll();
+    initHeroSlider();
 });
 
 // Add fadeIn animation

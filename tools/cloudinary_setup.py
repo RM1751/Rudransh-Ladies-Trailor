@@ -18,7 +18,7 @@ def create_cloudinary_html():
 
 const CLOUDINARY_CONFIG = {
     // Your Cloudinary cloud name
-    cloudName: 'YOUR_CLOUD_NAME',
+    cloudName: 'dbaduzib2',
     
     // Upload preset (create one in Cloudinary settings)
     uploadPreset: 'rudransh_uploads',

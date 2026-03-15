@@ -12,7 +12,7 @@
 
 const CLOUDINARY_CONFIG = {
     // Your Cloudinary cloud name (from Dashboard)
-    cloudName: 'YOUR_CLOUD_NAME',
+    cloudName: 'dbaduzib2',
     
     // Upload preset name (create in Settings → Upload)
     uploadPreset: 'rudransh_uploads',
