@@ -8,8 +8,44 @@
       "url": "https://res.cloudinary.com/dbaduzib2/image/upload/v1773573175/Blouse-Thumbnail-Hindi_1_sfgxlk.png",
       "uploadedAt": "2026-03-15T16:45:00.000Z",
       "isCloudinary": true
+    },
+    {
+      "id": 2,
+      "title": "Designer Blouse",
+      "description": "Elegant designer blouse",
+      "category": "blouse",
+      "url": "https://res.cloudinary.com/dbaduzib2/image/upload/v1773576533/rudransh_gallery/bvveib91bzzgj0rkrxr1.jpg",
+      "uploadedAt": "2026-03-15T17:00:00.000Z",
+      "isCloudinary": true
+    },
+    {
+      "id": 3,
+      "title": "Kurti Design",
+      "description": "Beautiful kurti design",
+      "category": "kurti",
+      "url": "https://res.cloudinary.com/dbaduzib2/image/upload/v1773576480/rudransh_gallery/yv72s0cvdkkuiqfr8glj.png",
+      "uploadedAt": "2026-03-15T17:00:00.000Z",
+      "isCloudinary": true
+    },
+    {
+      "id": 4,
+      "title": "Salwar Suit",
+      "description": "Elegant salwar suit design",
+      "category": "salwar",
+      "url": "https://res.cloudinary.com/dbaduzib2/image/upload/v1773576471/rudransh_gallery/qjaed6luszyx30ubc7gt.png",
+      "uploadedAt": "2026-03-15T17:00:00.000Z",
+      "isCloudinary": true
+    },
+    {
+      "id": 5,
+      "title": "Gown Design",
+      "description": "Beautiful gown design",
+      "category": "gown",
+      "url": "https://res.cloudinary.com/dbaduzib2/image/upload/v1773575073/rudransh_gallery/pyhxqobzfv7a1dla8hal.jpg",
+      "uploadedAt": "2026-03-15T17:00:00.000Z",
+      "isCloudinary": true
     }
   ],
   "version": "1.0",
-  "lastUpdated": "2026-03-15T16:45:00.000Z"
+  "lastUpdated": "2026-03-15T17:00:00.000Z"
 }
